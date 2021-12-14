@@ -16,7 +16,6 @@ public class GroupCreationTests {
 
   @BeforeMethod(alwaysRun = true)
   public void setUp() throws Exception {
-    System.setProperty("webdriver.chrome.driver", "");
     wd = new ChromeDriver();
     wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
@@ -43,6 +42,7 @@ public class GroupCreationTests {
     wd.findElement(By.name("group_footer")).sendKeys("test3");
     wd.findElement(By.name("submit")).click();
     wd.findElement(By.linkText("group page")).click();
+    wd.findElement(By.linkText("Logout")).click();
   }
 
   @AfterMethod(alwaysRun = true)
