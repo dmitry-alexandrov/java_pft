@@ -8,3 +8,5 @@
  !gradle-wrapper.jar
  .idea/workspace.xml
 .idea/misc.xml
+*.jar
+*.dll
