@@ -1,16 +1,12 @@
 package ru.stqa.pft.addressbook;
 
 import java.util.concurrent.TimeUnit;
-
 import org.testng.annotations.*;
-
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-
 public class GroupCreationTests {
   private WebDriver wd;
-
 
   @BeforeMethod(alwaysRun = true)
   public void setUp() throws Exception {
@@ -38,11 +34,11 @@ public class GroupCreationTests {
   }
 
   private void returnToGroupPage() {
-    wd.findElement(By.linkText("Logout")).click();
+    wd.findElement(By.linkText("group page")).click();
   }
 
   private void submitGroupCreation() {
-    wd.findElement(By.linkText("group page")).click();
+    wd.findElement(By.linkText("submit")).click();
   }
 
   private void fillGroupForm(GroupData groupData) {
@@ -55,7 +51,6 @@ public class GroupCreationTests {
     wd.findElement(By.name("group_footer")).click();
     wd.findElement(By.name("group_footer")).clear();
     wd.findElement(By.name("group_footer")).sendKeys(groupData.getFooter());
-    wd.findElement(By.name("submit")).click();
   }
 
   private void initGroupCreation() {
