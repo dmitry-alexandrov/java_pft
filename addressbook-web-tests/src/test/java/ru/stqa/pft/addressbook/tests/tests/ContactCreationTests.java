@@ -1,11 +1,12 @@
-package ru.stqa.pft.addressbook;
+package ru.stqa.pft.addressbook.tests.tests;
 
 import java.util.concurrent.TimeUnit;
 import org.testng.annotations.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import ru.stqa.pft.addressbook.tests.model.ContactData;
 
-public class ContactCreationTests {
+public class ContactCreationTests extends TestBase{
   private WebDriver wd;
 
   @BeforeMethod(alwaysRun = true)
@@ -73,15 +74,6 @@ public class ContactCreationTests {
   @AfterMethod(alwaysRun = true)
   public void tearDown() throws Exception {
     wd.quit();
-  }
-
-  private boolean isElementPresent(By by) {
-    try {
-      wd.findElement(by);
-      return true;
-    } catch (NoSuchElementException e) {
-      return false;
-    }
   }
 
   private boolean isAlertPresent() {
