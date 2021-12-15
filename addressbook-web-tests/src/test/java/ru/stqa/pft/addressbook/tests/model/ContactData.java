@@ -4,18 +4,18 @@ public class ContactData {
   private final String firstName;
   private final String lastName;
   private final String address;
-  private final String phone1;
-  private final String phone2;
+  private final String homePhone;
+  private final String mobilePhone;
   private final String email1;
   private final String email2;
 
-  public ContactData(String firstName, String lastName, String address, String phone1, String phone2,
+  public ContactData(String firstName, String lastName, String address, String homePhone, String mobilePhone,
                      String email1, String email2) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.address = address;
-    this.phone1 = phone1;
-    this.phone2 = phone2;
+    this.homePhone = homePhone;
+    this.mobilePhone = mobilePhone;
     this.email1 = email1;
     this.email2 = email2;
   }
@@ -26,9 +26,9 @@ public class ContactData {
 
   public  String getAddress() { return address; }
 
-  public  String getPhone1() { return phone1; }
+  public  String getHomePhone() { return homePhone; }
 
-  public  String getPhone2() { return phone2; }
+  public  String getMobilePhone() { return mobilePhone; }
 
   public  String getEmail1() { return email1; }
 
