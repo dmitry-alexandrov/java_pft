@@ -2,9 +2,11 @@ package ru.stqa.pft.addressbook.tests.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.tests.model.ContactData;
+import ru.stqa.pft.addressbook.tests.model.GroupData;
 
 public class ContactHelper extends HelperBase {
 
@@ -25,38 +27,51 @@ public class ContactHelper extends HelperBase {
     type(By.name("email"), contactData.getEmail1());
     type(By.name("email2"), contactData.getEmail2());
 
+    //if (creation) {
+     //new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
 
-    if (creation) {
-      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-    } else {
-      Assert.assertFalse(isElementPresent(By.name("new_group")));
-    }
+   // } else {
+
+     // Assert.assertFalse(isElementPresent(By.name("new_group")));
+   // }
   }
-    public void initContactCreation () {
-      click(By.linkText("add new"));
-    }
 
-    public void submitContactCreation () {
-      click(By.xpath("//input[21]"));
-    }
+  public void initContactCreation() {
+    click(By.linkText("add new"));
+  }
 
-    public void selectContact () {
-      click(By.name("selected[]"));
-    }
+  public void submitContactCreation() {
+    click(By.xpath("//input[21]"));
+  }
 
-    public void initContactModification () {
-      click(By.xpath("//img[@alt='Edit']"));
-    }
+  public void selectContact() {
+    click(By.name("selected[]"));
+  }
 
-    public void submitContactModification () {
-      click(By.name("update"));
-    }
+  public void initContactModification() {
+    click(By.xpath("//img[@alt='Edit']"));
+  }
 
-    public void deleteSelectedContacts () {
-      click(By.xpath("//input[@value='Delete']"));
-    }
-    public void accceptDeletion () {
-      accept();
-    }
+  public void submitContactModification() {
+    click(By.name("update"));
+  }
 
+  public void deleteSelectedContacts() {
+    click(By.xpath("//input[@value='Delete']"));
+  }
+
+  public void accceptDeletion() {
+    accept();
+  }
+
+  public void createContact(ContactData contact) {
+    initContactCreation();
+    fillContactForm(contact, true);
+    submitContactCreation();
+    returnToHomePage();
+  }
+
+  public boolean isThereAContact() {
+    return isElementPresent(By.name("selected[]"));
+  }
 }
