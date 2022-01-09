@@ -8,6 +8,9 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.tests.model.ContactData;
 import ru.stqa.pft.addressbook.tests.model.GroupData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContactHelper extends HelperBase {
 
   public ContactHelper(WebDriver wd) {
@@ -44,8 +47,8 @@ public class ContactHelper extends HelperBase {
     click(By.xpath("//input[21]"));
   }
 
-  public void selectContact() {
-    click(By.name("selected[]"));
+  public void selectContact(int index) {
+    wd.findElements(By.name("selected[]")).get(index).click();
   }
 
   public void initContactModification() {
@@ -73,5 +76,25 @@ public class ContactHelper extends HelperBase {
 
   public boolean isThereAContact() {
     return isElementPresent(By.name("selected[]"));
+  }
+
+  public int getContactCount() {
+    return wd.findElements(By.name("selected[]")).size();
+  }
+
+
+
+  public List<ContactData> getContactList() {
+    List<ContactData> contacts = new ArrayList<ContactData>();
+    List<WebElement> elements = wd.findElements(By.name("entry"));
+    for (WebElement element : elements) {
+      List<WebElement> cells = element.findElements(By.tagName("td"));
+      String firstName = cells.get(2).getText();
+      String lastName = cells.get(1).getText();
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+      ContactData contact = new ContactData(id, firstName, lastName, null, null, null, null, null, null);
+      contacts.add(contact);
+    }
+    return contacts;
   }
 }
