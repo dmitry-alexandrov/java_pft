@@ -1,20 +1,17 @@
 package ru.stqa.pft.addressbook.tests.tests;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.tests.model.ContactData;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 public class ContactModificationTests extends TestBase {
 
-  @Test
+  @Test (enabled = false)
   public void testContactModification() {
-    app.getNavigationHelper().gotoContactPage();
+    app.goTo().gotoContactPage();
     if (! app.getContactHelper().isThereAContact()) {
       app.getContactHelper().createContact(new ContactData("Dmitry", null, null, null, null, null, null, "test1"));
     }
