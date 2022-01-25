@@ -3,6 +3,8 @@ package ru.stqa.pft.addressbook.tests.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import ru.stqa.pft.addressbook.tests.model.ContactData;
 import ru.stqa.pft.addressbook.tests.model.Contacts;
 
@@ -33,14 +35,15 @@ public class ContactHelper extends HelperBase {
     type(By.name("email"), contactData.getEmail());
     type(By.name("email2"), contactData.getEmail2());
     type(By.name("email3"), contactData.getEmail3());
+    attach(By.name("photo"), contactData.getPhoto());
 
-    //if (creation) {
-     //new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+  //  if (creation) {
+  //   new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
 
-   // } else {
+  //  } else {
 
-     // Assert.assertFalse(isElementPresent(By.name("new_group")));
-   // }
+  //    Assert.assertFalse(isElementPresent(By.name("new_group")));
+  //  }
   }
 
   public void initContactCreation() {
