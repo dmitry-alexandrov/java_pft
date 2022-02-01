@@ -3,6 +3,7 @@ package ru.stqa.pft.addressbook.tests.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import ru.stqa.pft.addressbook.tests.model.GroupData;
 import ru.stqa.pft.addressbook.tests.model.Groups;
 
