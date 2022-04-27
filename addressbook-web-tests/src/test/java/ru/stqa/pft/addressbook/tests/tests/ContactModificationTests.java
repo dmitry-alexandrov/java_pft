@@ -16,9 +16,11 @@ public class ContactModificationTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions() {
+    File photo = new File("src/test/resources/stru.png");
     if (app.db().contacts().size() == 0) {
       app.goTo().contactPage();
-      app.contact().create(new ContactData().withFirstName("Dmitry").withGroup("test1"));
+    //  app.contact().create(new ContactData().withFirstName("Dmitry").withGroup("test1"));
+      app.contact().create(new ContactData().withFirstName("Dmitry").withLastName("Aleksandrov").withAddress("Moscow street 1").withHomePhone("11111111").withHomePhone2("22222222").withMobilePhone("33333333").withWorkPhone("44444444").withEmail("test1@test.com").withEmail2("test2@test.com").withEmail3("test3@test.com").withPhoto(photo));
     }
   }
 
@@ -33,5 +35,6 @@ public class ContactModificationTests extends TestBase {
     assertThat(app.contact().count(), equalTo(before.size()));
     Contacts after = app.db().contacts();
     assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
+    verifyContactListInUI();
   }
 }

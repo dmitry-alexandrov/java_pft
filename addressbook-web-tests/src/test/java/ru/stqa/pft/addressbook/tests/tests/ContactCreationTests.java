@@ -6,6 +6,7 @@ import org.openqa.selenium.json.TypeToken;
 import org.testng.annotations.*;
 import ru.stqa.pft.addressbook.tests.model.ContactData;
 import ru.stqa.pft.addressbook.tests.model.Contacts;
+import ru.stqa.pft.addressbook.tests.model.Groups;
 
 import java.io.*;
 import java.util.Iterator;
@@ -54,6 +55,7 @@ public class ContactCreationTests extends TestBase{
 
   @Test (dataProvider = "validContactsFromXml")
   public void testContactCreation(ContactData contact) {
+    Groups groups = app.db().groups();
     app.goTo().contactPage();
    // Contacts before = app.contact().all();
     Contacts before = app.db().contacts();
@@ -62,6 +64,7 @@ public class ContactCreationTests extends TestBase{
     Contacts after = app.db().contacts();
     assertThat(after, equalTo(
             before.withAdded( contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+    verifyContactListInUI();
   }
 
  // @Test
