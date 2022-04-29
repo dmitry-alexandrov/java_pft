@@ -7,18 +7,22 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.tests.model.ContactData;
 import ru.stqa.pft.addressbook.tests.model.Contacts;
+import ru.stqa.pft.addressbook.tests.model.GroupData;
+import ru.stqa.pft.addressbook.tests.model.Groups;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ContactHelper extends HelperBase {
+import static ru.stqa.pft.addressbook.tests.tests.TestBase.app;
 
-  public ContactHelper(WebDriver wd) {
+    public class ContactHelper extends HelperBase {
+
+      public ContactHelper(WebDriver wd) {
     super(wd);
   }
 
-  public void returnToHomePage() {
+      public void returnToHomePage() {
 
     if (isElementPresent(By.linkText("home page"))) {
       click(By.linkText("home page"));
@@ -54,7 +58,9 @@ public class ContactHelper extends HelperBase {
   }
 
   public void submitContactCreation() {
+    System.out.println("1");
     click(By.xpath("//input[21]"));
+    System.out.println("2");
   }
 
   public void selectContactById(int id) {
@@ -68,6 +74,7 @@ public class ContactHelper extends HelperBase {
   public void submitContactModification() {
     click(By.name("update"));
   }
+
 
  // public Set<ContactData> all() {
   //  Set<ContactData> contacts = new HashSet<ContactData>();
@@ -93,6 +100,122 @@ public class ContactHelper extends HelperBase {
   public void acceptDeletion() {
     accept();
   }
+
+      public void add(ContactData contact) {
+        Groups groups = app.db().groups();
+        if (!contact.getGroups().isEmpty()) {
+          Groups groupsInContact = contact.getGroups();
+          int groupsInContactSize = groupsInContact.size();
+          while (groupsInContactSize > 0) {
+            GroupData group = groupsInContact.iterator().next();
+            delete(group);
+            groupsInContactSize--;
+          }
+        } else {
+          returnToHomePage();
+          selectContactById(contact.getId());
+          addToGroup(groups);
+          returnToHomePage();
+        }
+      }
+
+      public ContactData findContactThatCanBeAddedToSomeGroup(Contacts contacts, int groupSize) {
+        for (ContactData contact : contacts) {
+          if (contact.getGroups().size() < groupSize) {
+            return contact;
+          }
+        }
+        return null;
+      }
+
+  public void addToGroup(Groups groups) {
+
+  //  Groups groups = app.db().groups();
+    new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(groups.iterator().next().getName());
+    click(By.name("add"));
+  }
+
+//    selectContactById(contact.getId());
+//    Groups beforeGroups = app.db().groups();
+//    Groups groupsInContact = contact.getGroups();
+
+
+
+ //   System.out.println(groupsInContact);
+ //   if (groupsInContact.iterator().hasNext()) {
+ //     System.out.println("inside 1 if");
+  //    if (groupsInContact.iterator().next().getId() == beforeGroups.iterator().next().getId()) {
+ //       System.out.println("inside 2nd if");
+  //      returnToHomePage();
+ //     } else {
+  //      System.out.println("inside else");
+   //     new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(beforeGroups.iterator().next().getName());
+   //     click(By.name("add"));
+  //      returnToHomePage();
+ //     }
+  //    System.out.println("outside 2nd if");
+ //   }
+ //   System.out.println("outside 1 if");
+//  }
+
+
+  public void deleteSelectedGroups() {
+    click(By.name("delete"));
+  }
+
+
+  public void selectGroupById(int id) {
+    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
+  }
+
+
+  public void delete(GroupData group) {
+    click(By.linkText("groups"));
+    selectGroupById(group.getId());
+    deleteSelectedGroups();
+ //   groupCache = null;
+    returnToGroupPage();
+  }
+
+
+  public void returnToGroupPage() {
+    if (isElementPresent(By.linkText("group page"))) {
+      click(By.linkText("group page"));
+    }
+    click(By.linkText("groups"));
+  }
+
+
+
+
+
+
+
+ // ContactData contact = findContactThatCanBeAddedToSomeGroup(contacts, groupSize);
+
+//  GroupData group = findGroupThatDoesNotIncludeContact(contact, groups);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   public void create(ContactData contact) {
     initContactCreation();

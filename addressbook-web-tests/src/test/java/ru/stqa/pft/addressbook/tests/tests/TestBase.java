@@ -20,8 +20,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestBase {
 
-  protected static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
-
+  //protected static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
+  public static final ApplicationManager app = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
   @BeforeSuite
   public void setUp() throws Exception {
     app.init();

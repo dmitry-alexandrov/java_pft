@@ -1,18 +1,5 @@
 <list>
   <contact>
-    <firstName>FirstName 0</firstName>
-    <lastName>LastName 0</lastName>
-    <address>Address 0</address>
-    <homePhone>11111111 0</homePhone>
-    <homePhone2>22222222 0</homePhone2>
-    <mobilePhone>33333333 0</mobilePhone>
-    <workPhone>44444444 0</workPhone>
-    <email>test@test.com 0</email>
-    <email2>test2@test.com 0</email2>
-    <email3>test3@test.com 0</email3>
-    <photo>src\test\resources\stru.png</photo>
-  </contact>
-  <contact>
     <firstName>FirstName 1</firstName>
     <lastName>LastName 1</lastName>
     <address>Address 1</address>

@@ -89,6 +89,11 @@ public class ContactData {
     return new Groups(groups);
   }
 
+  private Object readResolve() {
+    groups = new HashSet<GroupData>();
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
