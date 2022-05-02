@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 import ru.stqa.pft.addressbook.tests.model.ContactData;
 import ru.stqa.pft.addressbook.tests.model.Contacts;
 import ru.stqa.pft.addressbook.tests.model.GroupData;
@@ -42,4 +43,17 @@ public class DbHelper {
     session.close();
     return new Contacts(result);
   }
+
+  public ContactData contact(int id) {
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    session.getTransaction().commit();
+    Query result = (Query) session.createQuery("from ContactData where id = :id");
+    result.setParameter("id", id);
+    ContactData contact = (ContactData) result.uniqueResult();
+    session.close();
+    return contact;
+
+  }
+
 }

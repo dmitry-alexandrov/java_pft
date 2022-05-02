@@ -3,7 +3,14 @@ package ru.stqa.pft.addressbook.tests.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.annotations.Type;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
+import org.testng.annotations.BeforeClass;
 
 import javax.persistence.*;
 import java.io.File;
@@ -273,4 +280,6 @@ public class ContactData {
     groups.add(group);
     return this;
   }
+
+
 }

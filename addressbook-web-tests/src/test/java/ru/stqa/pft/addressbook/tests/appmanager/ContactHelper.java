@@ -101,7 +101,7 @@ import static ru.stqa.pft.addressbook.tests.tests.TestBase.app;
     accept();
   }
 
-      public void add(ContactData contact) {
+      public void add(ContactData contact) throws InterruptedException {
         Groups groups = app.db().groups();
         if (!contact.getGroups().isEmpty()) {
           Groups groupsInContact = contact.getGroups();
@@ -116,6 +116,9 @@ import static ru.stqa.pft.addressbook.tests.tests.TestBase.app;
           selectContactById(contact.getId());
           addToGroup(groups);
           returnToHomePage();
+          Groups groups1 = app.db().groups();
+          System.out.println(contact.getGroups());
+
         }
       }
 
@@ -128,12 +131,41 @@ import static ru.stqa.pft.addressbook.tests.tests.TestBase.app;
         return null;
       }
 
-  public void addToGroup(Groups groups) {
+      public ContactData findContactThatCanBeDeletedFromSomeGroup(Contacts contacts, int groupSize) {
+        for (ContactData contact : contacts) {
+          if (contact.getGroups().size() >= groupSize) {
+            return contact;
+          }
+        }
+        return contacts.iterator().next();
+      }
+
+  public void addToGroup(Groups groups) throws InterruptedException {
 
   //  Groups groups = app.db().groups();
-    new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(groups.iterator().next().getName());
+    new Select(wd.findElement(By.name("to_group"))).selectByValue(String.valueOf(groups.iterator().next().getId()));
+   Thread.sleep(2000);
     click(By.name("add"));
+    Thread.sleep(2000);
+    System.out.println();
+
   }
+
+  public void deleteFromGroup() throws InterruptedException {
+   // new Select(wd.findElement(By.name("group"))).selectByValue(String.valueOf(groups.iterator().next().getId()));
+    Thread.sleep(2000);
+    click(By.name("remove"));  //wd.findElement(By.cssSelector("input[value='Delete']")).click();
+    Thread.sleep(2000);
+ //   System.out.println();
+  }
+
+  public GroupData selectGroupForDeletion(Groups groups)  throws InterruptedException {
+     new Select(wd.findElement(By.name("group"))).selectByValue(String.valueOf(groups.iterator().next().getId()));
+        Thread.sleep(2000);
+  //      click(By.name("remove"));
+ //       Thread.sleep(2000);
+      return groups.iterator().next();
+      }
 
 //    selectContactById(contact.getId());
 //    Groups beforeGroups = app.db().groups();

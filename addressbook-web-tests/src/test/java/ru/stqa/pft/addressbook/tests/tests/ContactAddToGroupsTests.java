@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.tests.tests;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -13,7 +15,7 @@ import java.io.File;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class ContactAddToGroupsTests extends TestBase{
+public class ContactAddToGroupsTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions() {
@@ -30,7 +32,7 @@ public class ContactAddToGroupsTests extends TestBase{
   }
 
   @Test
-  public void testContactAddToGroups() {
+  public void testContactAddToGroups() throws InterruptedException {
     Contacts contacts = app.db().contacts();
     Groups groups = app.db().groups();
     int groupsSize = groups.size();
@@ -40,8 +42,30 @@ public class ContactAddToGroupsTests extends TestBase{
               .withFirstName("Dmitry").withLastName("Aleksandrov").withAddress("Moscow street 1").withHomePhone("11111111").withMobilePhone("22222222")
               .withWorkPhone("33333333").withEmail("test1@test.com").withEmail2("test2@test.com").withEmail3("test3@test.com"));
     } else {
-      app.contact().add(contact);
-      assertThat(contact.getGroups().size(), equalTo(contact.getGroups().size() + 1));
+      int contactSize = contact.getGroups().size();
+      Groups before = contact.getGroups();
+      System.out.println(contactSize);
+      if (!contact.getGroups().isEmpty()) {
+        Groups groupsInContact = contact.getGroups();
+        int groupsInContactSize = groupsInContact.size();
+        while (groupsInContactSize > 0) {
+          GroupData group = groupsInContact.iterator().next();
+          app.contact().delete(group);
+          groupsInContactSize--;
+        }
+      } else {
+        app.contact().returnToHomePage();
+        app.contact().selectContactById(contact.getId());
+        app.contact().addToGroup(groups);
+        app.contact().returnToHomePage();
+      }
+      int contactId = contact.getId();
+      ContactData contactAdded = app.db().contact(contactId);
+      Groups after = contactAdded.getGroups();
+      GroupData group = after.iterator().next();
+      System.out.println(contact.getGroups().size());
+      assertThat(after, equalTo(
+              before.withAdded(group.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
   }
 }
