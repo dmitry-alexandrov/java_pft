@@ -21,30 +21,29 @@ public class ChangePasswordTests extends TestBase {
   @Test
   public void testChangePassword() throws IOException, InterruptedException, MessagingException {
     long now = System.currentTimeMillis();
-    String user = "mantis"; //String.format("user%s", now);
+    String user = String.format("user%s", now); // "mantis";
     String password = "password";
+    String new_password = "new_password";
     String email = String.format("user%s@localhost", now);
-   // app.james().createUser(user, password);
-//    app.changePassword().start(user, email);
-//    List<MailMessage> mailMessages = app.james().waitForMail(user, password, 60000);
- //   String confirmationLink = findConfirmationLink(mailMessages, email);
- //   System.out.println(confirmationLink);
-//    app.registration().finish(confirmationLink, password);
- //   assertTrue(app.newSession().login(user, password));
-
-    app.changePassword().login("administrator", "root");
-    Thread.sleep(1000);
- //   app.changePassword().moveToManageUsers(user);
-    app.changePassword().moveToManageUsers();
-    Thread.sleep(1000);
     app.james().createUser(user, password);
+    app.changePassword().start(user, email);
     List<MailMessage> mailMessages = app.james().waitForMail(user, password, 60000);
     String confirmationLink = findConfirmationLink(mailMessages, email);
-    System.out.println(confirmationLink);
-  //  String confirmationLink3 = findConfirmationLink(mailMessages, email);
-  //  System.out.println(confirmationLink3);
-
-
+    app.registration().finish(confirmationLink, password);
+    assertTrue(app.newSession().login(user, password));
+    app.james().drainEmail(user, password);
+    app.james().deleteUser(user);
+    app.james().createUser(user, password);
+    app.changePassword().login("administrator", "root");
+    Thread.sleep(1000);
+    app.changePassword().moveToManageUsers(user);
+    Thread.sleep(1000);
+    List<MailMessage> mailMessages2 = app.james().waitForMail(user, password, 60000);
+    String confirmationLink2 = findConfirmationLink(mailMessages2, email);
+    Thread.sleep(1000);
+    app.changePassword().finishConfirmation(confirmationLink2, user, new_password);
+  //  Thread.sleep(2000);
+    assertTrue(app.newSession().login(user, new_password));
 
 }
 

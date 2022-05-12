@@ -26,12 +26,12 @@ public class ChangePasswordHelper extends HelperBase {
 
   }
 
-  public void moveToManageUsers() throws InterruptedException {
+  public void moveToManageUsers(String user) throws InterruptedException {
   //  click(By.cssSelector("a[href*='\"/mantisbt-2.25.3/manage_overview_page.php\"']"));
     click(By.id("menu-toggler"));
     click(By.xpath("//*[@id=\"sidebar\"]/ul/li[6]/a"));
     click(By.xpath("//*[@id=\"main-container\"]/div[2]/div[2]/div/ul/li[2]/a"));
-    click(By.linkText("mantis"));
+    click(By.linkText(user));
     Thread.sleep(2000);
    // click(By.cssSelector("input[value='Сбросить пароль']")); //*[@id="manage-user-reset-form"]/fieldset/span/input
     click(By.xpath("//*[@id=\"manage-user-reset-form\"]/fieldset/span/input"));
@@ -39,8 +39,9 @@ public class ChangePasswordHelper extends HelperBase {
   //  click(By.cssSelector("a[href*='\"/mantisbt-2.25.3/manage_user_page.php\"']"));
   }
 
-  public void finish(String confirmationLink, String password) {
+  public void finishConfirmation(String confirmationLink, String user, String password) {
     wd.get(confirmationLink);
+    type(By.name("realname"), user);
     type(By.name("password"), password);
     type(By.name("password_confirm"), password);
     click(By.cssSelector("button[type='submit']"));
