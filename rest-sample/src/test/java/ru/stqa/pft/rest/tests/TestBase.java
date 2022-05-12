@@ -1,17 +1,26 @@
-package ru.stqa.pft.mantis.tests;
+package ru.stqa.pft.rest.tests;
 
 import biz.futureware.mantis.rpc.soap.client.IssueData;
 import biz.futureware.mantis.rpc.soap.client.MantisConnectLocator;
 import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
 import biz.futureware.mantis.rpc.soap.client.ObjectRef;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.internal.bind.util.ISO8601Utils;
+import com.google.gson.reflect.TypeToken;
+import org.apache.http.client.fluent.Executor;
+import org.apache.http.client.fluent.Request;
 import org.openqa.selenium.remote.BrowserType;
 import org.testng.SkipException;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-import ru.stqa.pft.mantis.appmanager.ApplicationManager;
+import ru.stqa.pft.rest.appmanager.ApplicationManager;
+import ru.stqa.pft.rest.model.Issue;
 
 import javax.xml.rpc.ServiceException;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,23 +43,20 @@ public class TestBase {
     app.stop();
 
   }
-  boolean isIssueOpen(int issueId) throws MalformedURLException, ServiceException, RemoteException {
-    MantisConnectPortType mc = new MantisConnectLocator()
-            .getMantisConnectPort(new URL(app.getProperty("web.baseUrl") + "api/soap/mantisconnect.php"));
-    IssueData issue = mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId));
-    ObjectRef status = issue.getStatus();
-    String statusName = status.getName();
-    System.out.println(statusName);
-    if (statusName.equals("resolved")) {
-      return false;
-    } else {
-      return true;
-    }
+  boolean isIssueOpen(int issueId) throws IOException {
+
+    String json = Executor.newInstance().auth("288f44776e7bec4bf44fdfeb1e646490", "")
+            .execute(Request.Get("https://bugify.stqa.ru/api/issues/" + issueId + ".json")).returnContent().asString();
+    JsonElement parsed = new JsonParser().parse(json);
+    String stateName = parsed.getAsJsonObject().get("issues").getAsJsonArray().get(0).getAsJsonObject().get("state_name").getAsString();
+    if (stateName.equals("resolved")) {
+           return false;
+         } else {
+          return true;
+        }
   }
 
-
-
-  public void skipIfNotFixed(int issueId) throws MalformedURLException, ServiceException, RemoteException {
+  public void skipIfNotFixed(int issueId) throws IOException, ServiceException {
     if (isIssueOpen(issueId)) {
       throw new SkipException("Ignored because of issue " + issueId);
     }
