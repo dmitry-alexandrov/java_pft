@@ -3,10 +3,6 @@ package ru.stqa.pft.addressbook.tests.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
