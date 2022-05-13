@@ -3,6 +3,7 @@ package ru.stqa.pft.mantis.tests;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import ru.lanwen.verbalregex.VerbalExpression;
 import ru.stqa.pft.mantis.appmanager.HelperBase;
@@ -20,21 +21,12 @@ public class ChangePasswordTests extends TestBase {
 
   @Test
   public void testChangePassword() throws IOException, InterruptedException, MessagingException {
-    long now = System.currentTimeMillis();
-    String user = String.format("user%s", now); // "mantis";
+    String user = "mantis"; // "mantis";String.format("user%s", now);
     String password = "password";
     String new_password = "new_password";
-    String email = String.format("user%s@localhost", now);
+    String email = "mantis@localhost"; //String.format("user%s@localhost", now);
     app.james().createUser(user, password);
-    app.changePassword().start(user, email);
-    List<MailMessage> mailMessages = app.james().waitForMail(user, password, 60000);
-    String confirmationLink = findConfirmationLink(mailMessages, email);
-    app.registration().finish(confirmationLink, password);
-    assertTrue(app.newSession().login(user, password));
-    app.james().drainEmail(user, password);
-    app.james().deleteUser(user);
-    app.james().createUser(user, password);
-    app.changePassword().login("administrator", "root");
+    app.changePassword().login(app.getProperty("web.adminLogin"), app.getProperty("web.adminPassword"));
     Thread.sleep(1000);
     app.changePassword().moveToManageUsers(user);
     Thread.sleep(1000);
@@ -42,7 +34,8 @@ public class ChangePasswordTests extends TestBase {
     String confirmationLink2 = findConfirmationLink(mailMessages2, email);
     Thread.sleep(1000);
     app.changePassword().finishConfirmation(confirmationLink2, user, new_password);
-  //  Thread.sleep(2000);
+    app.james().drainEmail(user, password);
+    app.james().deleteUser(user);
     assertTrue(app.newSession().login(user, new_password));
 
 }
