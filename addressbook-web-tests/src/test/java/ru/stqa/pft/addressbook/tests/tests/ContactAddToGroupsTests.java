@@ -1,7 +1,7 @@
 package ru.stqa.pft.addressbook.tests.tests;
 
 import org.hibernate.Session;
-import org.hibernate.query.Query;
+//import org.hibernate.query.Query;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
