@@ -6,7 +6,6 @@
             <class name="ru.stqa.pft.addressbook.tests.tests.GroupModificationTests" />
             <class name="ru.stqa.pft.addressbook.tests.tests.GroupCreationTests" />
             <class name="ru.stqa.pft.addressbook.tests.tests.GroupDeletionTests" />
-            <class name="ru.stqa.pft.addressbook.tests.tests.GroupModificationTests" />
         </classes>
     </test>
 </suite>
